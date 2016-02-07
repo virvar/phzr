@@ -123,21 +123,24 @@
     * clear-world (boolean) {optional} - Clear everything in the world? This clears the World display list fully (but not the Stage, so if you've added your own objects to the Stage they will need managing directly)
     * clear-cache (boolean) {optional} - Clear the Game.Cache? This purges out all loaded assets. The default is false and you must have clearWorld=true if you want to clearCache as well.
     * parameter (*) - Additional parameters that will be passed to the State.init function (if it has one)."
-  ([state-manager key parameter]
+  ([state-manager key]
+   (phaser->clj
+    (.start state-manager
+            (clj->phaser key))))
+  ([state-manager key clear-world]
    (phaser->clj
     (.start state-manager
             (clj->phaser key)
-            (clj->phaser parameter))))
-  ([state-manager key parameter clear-world]
-   (phaser->clj
-    (.start state-manager
-            (clj->phaser key)
-            (clj->phaser parameter)
             (clj->phaser clear-world))))
-  ([state-manager key parameter clear-world clear-cache]
+  ([state-manager key clear-world clear-cache]
    (phaser->clj
     (.start state-manager
             (clj->phaser key)
-            (clj->phaser parameter)
             (clj->phaser clear-world)
-            (clj->phaser clear-cache)))))
+            (clj->phaser clear-cache))))
+  ([state-manager key clear-world clear-cache & parameters]
+   (phaser->clj
+    (.apply (.-start state-manager)
+            state-manager
+            (clj->phaser (into [key clear-world clear-cache]
+                               parameters))))))
