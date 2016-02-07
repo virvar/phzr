@@ -98,21 +98,24 @@
     * clear-world (boolean) {optional} - Clear everything in the world? This clears the World display list fully (but not the Stage, so if you've added your own objects to the Stage they will need managing directly)
     * clear-cache (boolean) {optional} - Clear the Game.Cache? This purges out all loaded assets. The default is false and you must have clearWorld=true if you want to clearCache as well.
     * parameter (*) - Additional parameters that will be passed to the State.init function if it has one."
-  ([state-manager parameter]
+  ([state-manager]
+   (phaser->clj
+    (.restart state-manager)))
+  ([state-manager clear-world]
    (phaser->clj
     (.restart state-manager
-              (clj->phaser parameter))))
-  ([state-manager parameter clear-world]
-   (phaser->clj
-    (.restart state-manager
-              (clj->phaser parameter)
               (clj->phaser clear-world))))
-  ([state-manager parameter clear-world clear-cache]
+  ([state-manager clear-world clear-cache]
    (phaser->clj
     (.restart state-manager
-              (clj->phaser parameter)
               (clj->phaser clear-world)
-              (clj->phaser clear-cache)))))
+              (clj->phaser clear-cache))))
+  ([state-manager clear-world clear-cache & parameters]
+   (phaser->clj
+    (.apply (.-restart state-manager)
+            state-manager
+            (clj->phaser (into [clear-world clear-cache]
+                               parameters))))))
 
 (defn start
   "Start the given State. If a State is already running then State.shutDown will be called (if it exists) before switching to the new State.
