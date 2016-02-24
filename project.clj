@@ -1,5 +1,4 @@
 (defproject phzr "0.1.0-SNAPSHOT"
-  :classifier "bazon"
   :description "A ClojureScript wrapper for the Phaser HTML5 game framework"
   :url "http://github.com/dparis/phzr"
   :license {:name "MIT License"
